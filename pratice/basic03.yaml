@@ -1,0 +1,27 @@
+name: My third workflow
+
+on:
+  workflow_dispatch:
+
+jobs:
+  producer:
+    runs-on: ubuntu-24.04
+    outputs:
+      message: ${{ steps.set-message.outputs.message }}
+    steps:
+      - id: set-message
+      - run: echo "message=workflow-complete" >> "$GITHUB_OUTPUT"
+
+
+  validator:
+    runs-on: ubuntu-24.04
+    needs: producer
+    steps:
+      - run: echo "${{ needs.producer.outputs.messgage }}"
+
+
+  reporter:
+    runs-on: ubuntu-24.04
+    needs: validator
+    steps:
+      - run: echo "${{ needs.producer.outputs.messgage }}"

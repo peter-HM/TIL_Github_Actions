@@ -1,0 +1,12 @@
+name: My first workflow
+
+on:
+  workflow_dispatch:
+
+jobs:
+  job:
+    runs-on: ubuntu-24.04
+    NAME: PETER 
+    steps:
+      - run: echo "My name is $PETER"
+      - run: "Today is $(date)"

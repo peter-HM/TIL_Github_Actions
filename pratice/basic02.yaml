@@ -1,0 +1,23 @@
+name: My second workflow
+
+on:
+  push:
+    branches:
+    - main
+  workflow_dispatch:
+
+env:
+  GREETING: Hello
+
+jobs:
+  job-1:
+    runs-on: ubuntu-24.04
+    env: 
+      NAME: Github Acitons
+    steps:
+      - run: echo "$GREETING  $NAME"
+  
+  job-2:
+    runs-on: ubuntu-24.04
+    steps:
+      - run: echo "$GREETING  ${NAME:-<UNSET>}"
