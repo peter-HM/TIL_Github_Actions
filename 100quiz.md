@@ -299,7 +299,9 @@ jobs:
 답 :
 
 32번 아래 코드에서 fail-fast: false 를 설정하면 어떻게 돼?
-yamlstrategy:
+yaml
+
+strategy:
   fail-fast: false
   matrix:
     node: [16, 18, 20]
@@ -309,7 +311,9 @@ yamlstrategy:
 답 :
 
 34번 아래 코드에서 잘못된 부분을 찾아봐요.
-yamljobs:
+yaml
+
+jobs:
   producer:
     runs-on: ubuntu-24.04
     steps:
@@ -324,13 +328,17 @@ yamljobs:
 답 :
 
 35번 아래 코드에서 schedule 이벤트는 한국 시간으로 몇 시에 실행돼?
-yamlon:
+yaml
+
+on:
   schedule:
     - cron: "0 3 * * *"
 답 :
 
 36번 continue-on-error: true 는 어떤 역할을 해?
-yamljobs:
+yaml
+
+jobs:
   job-1:
     runs-on: ubuntu-24.04
     continue-on-error: true
@@ -339,16 +347,25 @@ yamljobs:
 답 :
 
 37번 아래 두 가지 secrets 전달 방식의 차이점은?
-yaml# A
+yaml
+
+```
+
+# A
 secrets: inherit
 
 # B
 secrets:
   MY_SECRET: ${{ secrets.MY_SECRET }}
+
+```
+
 답 :
 
 38번 아래 코드에서 GITHUB_STEP_SUMMARY 의 역할은?
-yamlsteps:
+yaml
+
+steps:
   - run: |
       echo "### 배포 완료 🚀" >> $GITHUB_STEP_SUMMARY
       echo "- 버전: 1.0.0" >> $GITHUB_STEP_SUMMARY
@@ -358,7 +375,9 @@ yamlsteps:
 답 :
 
 40번 아래 코드에서 dorny/paths-filter Action의 역할은?
-yamlsteps:
+yaml
+
+steps:
   - uses: actions/checkout@v4
   - id: filter
     uses: dorny/paths-filter@v3
@@ -366,4 +385,76 @@ yamlsteps:
       filters: .github/utils/file-filters.yaml
 
   - run: echo "${{ steps.filter.outputs.changes }}"
+답 :
+
+# 퀴즈 41~50번 📝
+
+41번 아래 코드에서 id 의 역할은?
+yaml
+
+steps:
+  - id: build
+    run: echo "building..."
+  
+  - if: steps.build.outcome == 'success'
+    run: echo "build succeeded!"
+답 :
+
+42번 아래 코드는 어떤 상황에서 워크플로우가 실행돼?
+yaml
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+    paths:
+      - "src/**"
+      - "!src/**/*.test.ts"
+답 :
+
+43번 actions/checkout 은 왜 필요해?
+답 :
+
+44번 아래 코드에서 name: 과 id: 의 차이점은?
+yamlsteps:
+  - name: 코드 빌드하기
+    id: build-step
+    run: echo "building..."
+답 :
+
+45번 아래 코드의 실행 결과를 말해봐요.
+yamlenv:
+  WORKFLOW_VAR: hello
+
+jobs:
+  job-1:
+    runs-on: ubuntu-24.04
+    env:
+      JOB_VAR: world
+    steps:
+      - env:
+          STEP_VAR: "!"
+        run: echo "$WORKFLOW_VAR $JOB_VAR $STEP_VAR"
+      
+      - run: echo "$WORKFLOW_VAR $JOB_VAR ${STEP_VAR:-<UNSET>}"
+답 :
+
+46번 GitOps 방식이 Push 방식과 다른 점은?
+답 :
+
+47번 아래 코드에서 concurrency 의 역할은?
+yamlconcurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+답 :
+
+48번 task 를 사용해서 로직을 외부화하면 좋은 이유 2가지는?
+답 :
+
+49번 아래 코드에서 startsWith 의 역할은?
+yamlinstall_node: ${{ startsWith(matrix.service, 'services/node/') }}
+답 :
+
+50번 지금까지 배운 Action 종류 4가지를 말해봐요.
 답 :

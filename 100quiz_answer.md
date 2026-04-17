@@ -256,3 +256,163 @@ jobs:
 
 31.
 
+만약 workflow가 refs/heads/main에서 작업하고 있다면, deploying to production을 출력하라
+
+a: 현재 실행이 main branch에서 발생할을 때만 실행해줘. main brach가 아니면 해당 step은 건너뛴다.
+
+32.
+
+node 중 하나 실패해도 나머지는 계속 실행
+
+
+33.
+
+workflow_dispatch: 사람이 수동으로 workflow를 실행
+
+workflow_call: 다른 workflow가 싱핼함 (caller)
+
+
+34.
+
+jobs:
+    producer:
+        runs-on: ubuntu-24.04
+        outputs:
+            color: "${{ steps.set-color.outputs.color }}"
+        steps:
+            - id: set-color
+              run: echo "color=green" >> "$GITHUB_OUTPUT"
+
+    consumer:
+        runs-on: ubuntu-24.04
+        needs: producer
+        steps:
+            - run: echo "${{ needs.producer.outputs.color }}"
+
+35.
+
+매일 3시 0분에 실행된다.  --> UTC 기준
+
+한국 기준 +9H   12시에 실행된다.
+
+36.
+
+continue-on-error는 에러가 발생해도 계속 workflow가 멈추지 않고 실행하게 한다. if:failure()를 붙여서 코드를 마저 작성하기도 한다.
+
+37.
+
+- secrets: inherit > 나의 secret 전부 넘겨줄게 > 편리하미나 불필요한 secret도 넘어갈 수 있다.
+- secrets: EXAMPLE_REPOSITORY_SECRET: ${{ secret.XXX }} > 필요한 것만 골라서 넘길게? > 보안상 훨씬 안전
+
+38.
+
+GITHUB_STEP_SUMMARY의 역할은 workflow과 관련된 내용을 기입하는 곳이다. 
+
+a:
+
+Github Actions 싱행 결과 페이지에 md 형식으로 요약 리포트를 표시해줘요.
+
+단순히 기입하는 곳이 아니라 github UI에서 렌더링되어 보인다.
+
+39.
+
+Lint는 배포 전에 검사를 하는 것이다.
+코드에 오타는 없는지, 세미콜론이 있는지, 오류 발생 가능성이 있는지. 마치 맞춤법 검사기 처럼 하는 것
+
+40.
+
+dorny/paths-filter Action은 변화된 파일을 감지하는 것 같다. CI/CD를 할때, 변화된 코드만 감지해서 자동화를 하면 효율적이기에.
+
+
+# 41 ~ 50
+
+41.
+
+id: buijld 는 이 step의 이름? 별칭? 이다. step2에서 steps.build.outcome 으로 참조할 수 있게끔
+
+42.
+
+src안의 파일이 열리거나, 동기화 된 경우 AND scr안의 ts 확장자가 열리지않거나, 동기화되지 않은 경우에만 실행
+
+a:
+
+- PR이 열리거나, 새 커밋이 추가되었을 떄
+- AND src 안의 파일이 변경되었을 떄
+- AND src 안의 .test.ts 파일은 제외
+
+43.
+
+checkout은 github에서 branch간의 이동을 하기 위해서 사용되어짐
+
+a:
+
+github 저장소의 코드를 Runner 컴퓨터로 가져오는 것.
+
+44.
+
+name은 사람이 알아보기 쉽게 하기위해서, id는 다른 step, job 등에서 참조하기 쉽게하기 위해서.
+
+45.
+
+step1 print: hello world !
+step2 print" hello world <UNSET>
+
+46.
+
+가장 큰 차이 점은 자동화의 여부 인듯 하다. push 방식은 workflow를 직접 배포하는 것이고 gitOps는 설정파일의 수정만으로도 자동 배포되게 할 수 있다.
+
+a:
+
+Push:
+workflow가 직접 서버에 배포를 명령
+
+GitOps:
+workflow는 Git 설정 파일만 수정 > 서버 안의 에이전트가 Git 변경을 감지해서 알아서 배포
+
+Point: 누가 배포하느냐 가 핵심이다. push: workflow가 밀어넣는다. Gitops: 에이전트가 당겨간다.
+
+47.
+
+concurrency는 동시성이라는 의미로, github.workflow 와 github.ref 같다면, cancel in progress: true이니까 취소 하고 다시 새로 시작하라라는 의미이다.
+
+48.
+
+Taskfile로 외부화하면 다음과 같은 장점을 가진다.
+1) 가시성이 확보된다.
+2) debug에 용이하다.
+3) 로컬에서도 test가 가능해진다.
+
+49.
+
+services/node/ 안에 있는 파일들 참고해서 명령을 실행하라
+
+a:
+
+"matrix.service 값이 service/node/ 로 시작하면 true
+
+matrix.service = service/nodes/api > startwith= true > install Node.js
+
+matrix.service = service/nodes/api > startwith=false > stop
+
+50.
+
+checkout,
+upload_file,
+download_file,
+filter
+
+
+--> Action의 이름이다.
+
+a:
+
+종류 4가지
+
+Composite Actions - Yaml로 step 묶기
+
+Reusable Actions - workflow 전체 재사용
+
+Javascript Actions - JS/TS 코드로 만들기
+
+Container Actions - docker로 만들기
+
