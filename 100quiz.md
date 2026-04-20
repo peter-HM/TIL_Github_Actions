@@ -417,14 +417,18 @@ on:
 답 :
 
 44번 아래 코드에서 name: 과 id: 의 차이점은?
-yamlsteps:
+yaml
+
+steps:
   - name: 코드 빌드하기
     id: build-step
     run: echo "building..."
 답 :
 
 45번 아래 코드의 실행 결과를 말해봐요.
-yamlenv:
+yaml
+
+env:
   WORKFLOW_VAR: hello
 
 jobs:
@@ -444,7 +448,9 @@ jobs:
 답 :
 
 47번 아래 코드에서 concurrency 의 역할은?
-yamlconcurrency:
+yaml
+
+concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 답 :
@@ -453,7 +459,9 @@ yamlconcurrency:
 답 :
 
 49번 아래 코드에서 startsWith 의 역할은?
-yamlinstall_node: ${{ startsWith(matrix.service, 'services/node/') }}
+yaml
+
+install_node: ${{ startsWith(matrix.service, 'services/node/') }}
 답 :
 
 50번 지금까지 배운 Action 종류 4가지를 말해봐요.
